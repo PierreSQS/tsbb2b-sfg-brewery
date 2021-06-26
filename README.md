@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery.svg?style=shield&circle-token=9ef07414321098a66e2321632e2c7f4f9a8816df)](https://app.circleci.com/pipelines/github/PierreSQS/tsbb2b-sfg-brewery)
+[![CircleCI](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery.svg?style=shield&circle-token=035c366f8cf89d62aa7f1ab84391b6e47ef4ea0f)](https://app.circleci.com/pipelines/github/PierreSQS/tsbb2b-sfg-brewery)
 
 # Testing Spring Boot B2G - SFG Brewery
 
