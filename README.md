@@ -1,4 +1,4 @@
-[![CircleCI](https://github.com/PierreSQS/tsbb2b-sfg-brewery/tree/junit-pierrot.svg?style=shield&circle-token=4d2da2bbe7b57dd26eb1a138a2c2b46b7ea5957a)](https://github.com/PierreSQS/tsbb2b-sfg-brewery/tree/junit-pierrot)
+[![CircleCI](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery/tree/junit-pierrot.svg?style=shield&circle-token=4d2da2bbe7b57dd26eb1a138a2c2b46b7ea5957a)](https://github.com/PierreSQS/tsbb2b-sfg-brewery/tree/junit-pierrot)
 # Testing Spring Boot B2G - SFG Brewery
 
 All source code examples in the repository are for my [Online Course - Testing Spring Beginner to Guru](https://www.udemy.com/testing-spring-boot-beginner-to-guru/?couponCode=GITHUB_REPO)
