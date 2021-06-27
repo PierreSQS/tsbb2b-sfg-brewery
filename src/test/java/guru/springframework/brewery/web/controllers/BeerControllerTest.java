@@ -69,8 +69,10 @@ class BeerControllerTest {
                     .param("beerStyle",BeerStyleEnum.PILSNER.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].beerStyle", equalTo("PILSNER")))
+                .andExpect(jsonPath("$.content[1].beerName", equalTo("Beer Mock2")))
                 .andExpect(jsonPath("$.pageable.sort.unsorted",equalTo(true)))
                 .andExpect(jsonPath("$.pageable.offset",equalTo(3)))
+                .andExpect(jsonPath("$.numberOfElements",equalTo(2)))
                 .andExpect(jsonPath("$.numberOfElements",equalTo(2)))
                 .andDo(print());
     }
