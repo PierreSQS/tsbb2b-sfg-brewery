@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery/tree/message-converters-pierrot.svg?style=shield)](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery)
+[![CircleCI](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery/tree/using-test-restemplate-pierrot.svg?style=shield)](https://circleci.com/gh/PierreSQS/tsbb2b-sfg-brewery)
 
 # Testing Spring Boot B2G - SFG Brewery
 
