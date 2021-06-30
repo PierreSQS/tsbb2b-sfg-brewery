@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(BeerOrderController.class)
 class BeerOrderControllerTest {
 
-    private static final String BASEURL = "/api/v1/customers";
+    private static final String BASEURL = "/api/v1/customers/";
 
     @MockBean
     BeerOrderService beerOrderSrvMock;
