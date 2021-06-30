@@ -63,23 +63,24 @@ class BeerOrderControllerTest extends AbstractRestControllerTest {
 
     @BeforeEach
     void setUp() {
-     customerDtoMock = CustomerDto.builder()
+        customerDtoMock = CustomerDto.builder()
                 .id(UUID.fromString("4793b3fc-0f52-485f-910c-7915a8a4e312"))
                 .build();
 
-     beerOrderDtoMock = BeerOrderDto.builder()
+        beerOrderDtoMock = BeerOrderDto.builder()
                 .id(UUID.fromString("a6935dc7-9adb-421b-b9d7-eb76c6271f6e"))
                 .customerId(customerDtoMock.getId())
                 .orderStatus(OrderStatusEnum.NEW)
+                .createdDate(OffsetDateTime.now())
                 .build();
 
-     beerOrderDtoMock1 = BeerOrderDto.builder()
+        beerOrderDtoMock1 = BeerOrderDto.builder()
                 .customerId(customerDtoMock.getId())
                 .orderStatus(OrderStatusEnum.PICKED_UP)
                 .createdDate(OffsetDateTime.now())
                 .build();
 
-     beerOrderDtoMock2 = BeerOrderDto.builder()
+        beerOrderDtoMock2 = BeerOrderDto.builder()
                 .customerId(customerDtoMock.getId())
                 .orderStatus(OrderStatusEnum.READY)
                 .createdDate(OffsetDateTime.now())
@@ -127,10 +128,12 @@ class BeerOrderControllerTest extends AbstractRestControllerTest {
         // When, Then
         final String customerID = customerDtoMock.getId().toString();
         mockMvc.perform(post((BASEURL+ customerID +"/orders"))
-                        .content(jsonContent)
-                        .contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .content(jsonContent).contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.orderStatus",equalTo(OrderStatusEnum.NEW.name())))
+                .andExpect(jsonPath("$.createdDate",
+                        equalTo(beerOrderDtoMock.getCreatedDate().format(dateTimeFormatter))))
                 .andDo(print());
     }
 
@@ -147,7 +150,7 @@ class BeerOrderControllerTest extends AbstractRestControllerTest {
         perform.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("$.customerId",equalTo(beerOrderDtoMock.getCustomerId().toString())))
-                .andExpect(jsonPath("$.orderStatus",equalTo("NEW")))
+                .andExpect(jsonPath("$.orderStatus",equalTo(OrderStatusEnum.NEW.toString())))
                 .andDo(print());
     }
 
