@@ -7,10 +7,13 @@ import guru.springframework.brewery.web.model.CustomerDto;
 import guru.springframework.brewery.web.model.OrderStatusEnum;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -34,6 +37,11 @@ class BeerOrderControllerTest {
 
     CustomerDto customerDtoMock;
 
+    @Captor
+    ArgumentCaptor<UUID> uuidArgumentCaptor;
+
+    @Captor
+    ArgumentCaptor<Pageable> pageableArgumentCaptor;
 
     @MockBean
     BeerOrderService beerOrderSrvMock;
@@ -69,7 +77,7 @@ class BeerOrderControllerTest {
         BeerOrderPagedList beerOrderPagedListMock =
                 new BeerOrderPagedList(beerOrderDtoList, PageRequest.of(1,3),3);
 
-        when(beerOrderSrvMock.listOrders(customerDtoMock.getId(), PageRequest.of(1,3)))
+        when(beerOrderSrvMock.listOrders(uuidArgumentCaptor.capture(), pageableArgumentCaptor.capture()))
                 .thenReturn(beerOrderPagedListMock);
 
         final String customerID = customerDtoMock.getId().toString();
