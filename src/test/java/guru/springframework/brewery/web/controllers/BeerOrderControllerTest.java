@@ -29,13 +29,12 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BeerOrderController.class)
-class BeerOrderControllerTest {
+class BeerOrderControllerTest extends AbstractRestControllerTest {
 
     private static final String BASEURL = "/api/v1/customers/";
 
@@ -119,7 +118,19 @@ class BeerOrderControllerTest {
     }
 
     @Test
-    void placeOrder() {
+    void placeOrder() throws Exception {
+        // Given
+        String jsonContent = asJsonString(beerOrderDtoMock);
+        when(beerOrderSrvMock.placeOrder(customerDtoMock.getId(), beerOrderDtoMock)).thenReturn(beerOrderDtoMock);
+
+        // When, Then
+        final String customerID = customerDtoMock.getId().toString();
+        mockMvc.perform(post((BASEURL+ customerID +"/orders"))
+                        .content(jsonContent)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isCreated())
+                .andDo(print());
     }
 
     @Test
