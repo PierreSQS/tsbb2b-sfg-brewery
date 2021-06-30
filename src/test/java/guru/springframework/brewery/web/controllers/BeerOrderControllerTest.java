@@ -18,15 +18,21 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -36,6 +42,14 @@ class BeerOrderControllerTest {
     private static final String BASEURL = "/api/v1/customers/";
 
     CustomerDto customerDtoMock;
+
+    BeerOrderDto beerOrderDtoMock;
+
+    BeerOrderDto beerOrderDtoMock1;
+
+    BeerOrderDto beerOrderDtoMock2;
+
+    DateTimeFormatter dateTimeFormatter;
 
     @Captor
     ArgumentCaptor<UUID> uuidArgumentCaptor;
@@ -53,26 +67,36 @@ class BeerOrderControllerTest {
     void setUp() {
      customerDtoMock = CustomerDto.builder()
                 .id(UUID.fromString("4793b3fc-0f52-485f-910c-7915a8a4e312"))
-                .build();    }
+                .build();
 
-    @Test
-    void listOrders() throws Exception {
-        // Given
-        BeerOrderDto beerOrderDto1 = BeerOrderDto.builder()
-//                .customerId(UUID.fromString("18e27a7c-d317-4d0d-a236-143f51825a3b"))
+     beerOrderDtoMock = BeerOrderDto.builder()
+                .id(UUID.fromString("a6935dc7-9adb-421b-b9d7-eb76c6271f6e"))
+                .customerId(customerDtoMock.getId())
+                .orderStatus(OrderStatusEnum.NEW)
+                .build();
+
+     beerOrderDtoMock1 = BeerOrderDto.builder()
                 .customerId(customerDtoMock.getId())
                 .orderStatus(OrderStatusEnum.PICKED_UP)
                 .createdDate(OffsetDateTime.now())
                 .build();
 
-        BeerOrderDto beerOrderDto2 = BeerOrderDto.builder()
-//                .customerId(UUID.fromString("a6935dc7-9adb-421b-b9d7-eb76c6271f6e"))
+     beerOrderDtoMock2 = BeerOrderDto.builder()
                 .customerId(customerDtoMock.getId())
                 .orderStatus(OrderStatusEnum.READY)
                 .createdDate(OffsetDateTime.now())
                 .build();
 
-        List<BeerOrderDto> beerOrderDtoList = new ArrayList<>(Arrays.asList(beerOrderDto1,beerOrderDto2));
+
+
+        dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
+
+    }
+
+    @Test
+    void listOrders() throws Exception {
+        // Given
+        List<BeerOrderDto> beerOrderDtoList = new ArrayList<>(Arrays.asList(beerOrderDtoMock1,beerOrderDtoMock2));
 
         BeerOrderPagedList beerOrderPagedListMock =
                 new BeerOrderPagedList(beerOrderDtoList, PageRequest.of(1,3),3);
@@ -80,11 +104,20 @@ class BeerOrderControllerTest {
         when(beerOrderSrvMock.listOrders(uuidArgumentCaptor.capture(), pageableArgumentCaptor.capture()))
                 .thenReturn(beerOrderPagedListMock);
 
+        // When, Then
         final String customerID = customerDtoMock.getId().toString();
+        final String createDateItem2 = beerOrderDtoList.get(0).getCreatedDate().format(dateTimeFormatter);
+
         mockMvc.perform(get(BASEURL+ customerID +"/orders/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].orderStatus",equalTo(OrderStatusEnum.PICKED_UP.toString())))
+                .andExpect(jsonPath("$.content[1].createdDate",is(createDateItem2)))
+                .andExpect(jsonPath("$.pageable.sort.sorted",is(false)))
                 .andDo(print());
+
+        System.out.printf("%n####### $.content[1].createdDate: %s ######%n%n", createDateItem2);
     }
 
     @Test
@@ -94,12 +127,6 @@ class BeerOrderControllerTest {
     @Test
     void getOrder() throws Exception {
         // Given
-        BeerOrderDto beerOrderDtoMock = BeerOrderDto.builder()
-                .id(UUID.fromString("a6935dc7-9adb-421b-b9d7-eb76c6271f6e"))
-                .customerId(customerDtoMock.getId())
-                .orderStatus(OrderStatusEnum.NEW)
-                .build();
-
         when(beerOrderSrvMock.getOrderById(customerDtoMock.getId(),beerOrderDtoMock.getId()))
                 .thenReturn(beerOrderDtoMock);
 
