@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -27,12 +26,11 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -142,6 +140,12 @@ class BeerOrderControllerTest {
     }
 
     @Test
-    void pickupOrder() {
+    void pickupOrder() throws Exception {
+        final String customerId = customerDtoMock.getId().toString();
+        final String beerOrderDtoID = beerOrderDtoMock.getId().toString();
+
+        mockMvc.perform(put((BASEURL+ customerId +"/orders/"+ beerOrderDtoID +"/pickup")))
+                .andExpect(status().isNoContent())
+                .andDo(print());
     }
 }
