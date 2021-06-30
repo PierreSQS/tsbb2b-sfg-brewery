@@ -28,6 +28,7 @@ import java.util.UUID;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -121,7 +122,7 @@ class BeerOrderControllerTest extends AbstractRestControllerTest {
     void placeOrder() throws Exception {
         // Given
         String jsonContent = asJsonString(beerOrderDtoMock);
-        when(beerOrderSrvMock.placeOrder(customerDtoMock.getId(), beerOrderDtoMock)).thenReturn(beerOrderDtoMock);
+        when(beerOrderSrvMock.placeOrder(any(UUID.class), any(BeerOrderDto.class))).thenReturn(beerOrderDtoMock);
 
         // When, Then
         final String customerID = customerDtoMock.getId().toString();
