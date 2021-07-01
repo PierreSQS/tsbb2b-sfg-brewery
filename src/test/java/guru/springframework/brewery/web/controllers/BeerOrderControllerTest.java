@@ -5,6 +5,7 @@ import guru.springframework.brewery.web.model.BeerOrderDto;
 import guru.springframework.brewery.web.model.BeerOrderPagedList;
 import guru.springframework.brewery.web.model.CustomerDto;
 import guru.springframework.brewery.web.model.OrderStatusEnum;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,6 +30,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -91,6 +93,11 @@ class BeerOrderControllerTest extends AbstractRestControllerTest {
 
         dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ");
 
+    }
+
+    @AfterEach
+    void tearDown(){
+        reset(beerOrderSrvMock);
     }
 
     @Test
