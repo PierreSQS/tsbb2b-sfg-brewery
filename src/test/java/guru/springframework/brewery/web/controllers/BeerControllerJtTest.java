@@ -56,6 +56,7 @@ class BeerControllerJtTest {
         mockMvc.perform(get("/api/v1/beers/{beerId}",beerDtoMock.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.beerName",equalTo("33 Export")))
+                .andExpect(jsonPath("$.id",equalTo(beerDtoMock.getId().toString())))
                 .andDo(print());
     }
 }
