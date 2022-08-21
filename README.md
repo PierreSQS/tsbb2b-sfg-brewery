@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/springframeworkguru/tsbb2b-sfg-brewery.svg?style=svg)](https://circleci.com/gh/springframeworkguru/tsbb2b-sfg-brewery)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/PierreSQS/tsbb2b-sfg-brewery/tree/order-controller-assn-pierrot-revisit.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/PierreSQS/tsbb2b-sfg-brewery/tree/order-controller-assn-pierrot-revisit)
 
 # Testing Spring Boot B2G - SFG Brewery
 
