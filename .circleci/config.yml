@@ -12,6 +12,10 @@ jobs:
         docker:
             - image: cimg/openjdk:11.0
         steps:
+            - add_ssh_keys:
+                fingerprints:
+                  - "a9:60:7e:e5:47:6a:4f:22:65:17:7f:83:24:87:96:e9"
+
             # Checkout the code as the first step.
             - checkout
             # Use mvn clean and package as the standard maven build phase
